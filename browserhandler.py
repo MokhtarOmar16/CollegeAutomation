@@ -20,6 +20,7 @@ class BrowserHandler:
     def login_to(self,url: str,username: str,password: str) -> bool:
         """
         This method is designed to login into your url using the username and password 
+        reture True is account was right ,False otherwise.
         """
 
 
@@ -86,18 +87,20 @@ class BrowserHandler:
         return links
 
 
-    def get_classes_links(self,number:int = 0) -> list:
+    def get_classes_links(self,subject_url:str,number:int = 0) -> list:
         
         """
             Get a list of class links.
 
             :param number: The last index of the list. By default, it is set to zero.
             :type number: int
+            :param subject_url: url of the subject
+            :type subject_url: str
 
             :return: A list of class links.
             :rtype: list
         """
-        
+        self.driver.get(subject_url)
         element = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, 'courseMenuPalette_contents'))
         )
@@ -121,15 +124,20 @@ class BrowserHandler:
         return links[-number:]
 
 
-    def get_lectures(self, link:str) -> list:
+    def get_lectures(self, link:str) -> list[dict]:
         """
-            Get a list of links associated with a specific  subject.
+            Get a list of links associated with a specific  class of subject.
 
-            :param link: link or url of the subject.
+            :param link: link or url of the class of subject.
             :type subject_code: str
 
-            :return: A list of links associated with the scientific subject.
-            :rtype: list
+            :return: A list of links associated with the class.
+            :rtype: list[dict] 
+            Example
+            >>> return [
+            >>>    {"link":"www.lecture1.ex", 
+            >>> "label":"Recutrion algorithm and problem solving"}
+            >>> ]
         """
         self.driver.get(link)
         ul = self.driver.find_element(By.XPATH, '//*[@id="content_listContainer"]')
@@ -149,7 +157,7 @@ class BrowserHandler:
         return links
     
 
-    def video(self ,link:str) -> None:
+    def watch_video(self ,link:str) -> None:
         """
             Listen to the video associated with a specific lesson or lecture.
 
