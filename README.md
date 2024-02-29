@@ -26,6 +26,5 @@ OR
 
 >$ pip install selenium
 >
->$ pip install schedule
->
->$ pip install PyAutoIt
+>$ pip install pandas
+
